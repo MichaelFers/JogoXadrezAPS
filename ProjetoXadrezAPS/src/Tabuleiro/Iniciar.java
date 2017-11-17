@@ -116,9 +116,9 @@ public class Iniciar extends JFrame implements ActionListener {
 				if (x == 1) {
 					String nome = JOptionPane.showInputDialog("Informe o nome do jogador " + x);
 					String cor = JOptionPane.showInputDialog("Informe a cor que o jogador deseja.").toLowerCase();
-					System.out.println(cor);
+					
 					boolean bo = !(cor.equals("preto") || cor.equals("branco"));
-					System.out.println(bo);
+					
 					if((!(cor.equals("preto") || cor.equals("branco")))){
 						throw new CorDaPecaNaoExiste(
 								"Cor da peça informado inválido, apenas permitido: Branco ou Preto.");
@@ -147,7 +147,7 @@ public class Iniciar extends JFrame implements ActionListener {
 			try {
 				
 				jogadores = criarJogadores();
-				JOptionPane.showMessageDialog(null,jogadores[0].toString()+" "+jogadores[1].toString());
+				
 				tela = new TelaTabuleiro(jogadores[0], jogadores[1]);
 				tela.setVisible(true);
 				dispose();
