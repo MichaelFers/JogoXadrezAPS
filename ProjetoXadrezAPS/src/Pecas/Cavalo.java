@@ -16,9 +16,9 @@ public class Cavalo  extends Peca{
 	@Override
 	public void iniciaImg() {
 		if(cor.BRANCO == cor) {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Brancas/Cavalo.jpg");
+			img = new ImageIcon("img/Brancas/Cavalo.jpg");
 		}else {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Escuras/Cavalo.jpg");
+			img = new ImageIcon("img/Escuras/Cavalo.jpg");
 		}
 		
 	}

@@ -17,9 +17,9 @@ public class Bispo extends Peca {
 	@Override
 	public void iniciaImg() {
 		if(cor.BRANCO == cor) {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Brancas/Bispo.jpg");
+			img = new ImageIcon("img/Brancas/Bispo.jpg");
 		}else {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Escuras/Bispo.jpg");
+			img = new ImageIcon("img/Escuras/Bispo.jpg");
 		}
 		
 	}

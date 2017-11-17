@@ -89,7 +89,7 @@ public class Iniciar extends JFrame implements ActionListener {
 		novoJogo.addActionListener(this);
 		
 		img1 = new ImageIcon(
-				"C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/start.jpg");
+				"img/start.jpg");
 
 		btInicia = new JButton(img1);
 		btInicia.setBounds(236, 159, 121, 87);
@@ -97,7 +97,7 @@ public class Iniciar extends JFrame implements ActionListener {
 		contentPane.add(btInicia);
 
 		img2 = new ImageIcon(
-				"C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/telaInicial.jpg");
+				"img/telaInicial.jpg");
 
 		lbImg = new JLabel(img2);
 		lbImg.setBounds(0, 0, 566, 426);

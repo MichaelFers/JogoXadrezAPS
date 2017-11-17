@@ -15,9 +15,9 @@ public class PecaVazia extends Peca{
 	public void iniciaImg() {
 		if(cor.BRANCO == cor) {
 			
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Brancas/fundo.jpg");
+			img = new ImageIcon("img/Brancas/fundo.jpg");
 		}else {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Escuras/fundo.jpg");
+			img = new ImageIcon("img/Escuras/fundo.jpg");
 		}
 		
 	}
