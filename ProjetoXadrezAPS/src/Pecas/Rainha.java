@@ -18,9 +18,9 @@ public class Rainha extends Peca{
 	@Override
 	public void iniciaImg() {
 		if(cor.BRANCO == cor) {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Brancas/Rainha.jpg");
+			img = new ImageIcon("img/Brancas/Rainha.jpg");
 		}else {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Escuras/Rainha.jpg");
+			img = new ImageIcon("img/Escuras/Rainha.jpg");
 		}
 		
 	}

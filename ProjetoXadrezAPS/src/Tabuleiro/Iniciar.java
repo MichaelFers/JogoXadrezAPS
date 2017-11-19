@@ -89,7 +89,7 @@ public class Iniciar extends JFrame implements ActionListener {
 		novoJogo.addActionListener(this);
 		
 		img1 = new ImageIcon(
-				"C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/start.jpg");
+				"img/start.jpg");
 
 		btInicia = new JButton(img1);
 		btInicia.setBounds(236, 159, 121, 87);
@@ -97,7 +97,7 @@ public class Iniciar extends JFrame implements ActionListener {
 		contentPane.add(btInicia);
 
 		img2 = new ImageIcon(
-				"C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/telaInicial.jpg");
+				"img/telaInicial.jpg");
 
 		lbImg = new JLabel(img2);
 		lbImg.setBounds(0, 0, 566, 426);
@@ -146,22 +146,20 @@ public class Iniciar extends JFrame implements ActionListener {
 			TelaTabuleiro tela =null;
 			try {
 				
-				jogadores = criarJogadores();
-				JOptionPane.showMessageDialog(null,jogadores[0].toString()+" "+jogadores[1].toString());
+				jogadores = criarJogadoresAuto(); //criarJogadores();
 				tela = new TelaTabuleiro(jogadores[0], jogadores[1]);
 				tela.setVisible(true);
 				dispose();
 				
-			} catch (CorDaPecaNaoExiste  e) {
+			} catch (Exception  e) {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 				
 			}
 		}if(arg0.getSource() == sair) {
 			System.exit(0);
 		}
-
-		
-		
-
+	}
+	public Jogador[] criarJogadoresAuto() {
+		return new Jogador[]{new Jogador("Michael",Cor.BRANCO), new Jogador("Junior",Cor.PRETO)};
 	}
 }

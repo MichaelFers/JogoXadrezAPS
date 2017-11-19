@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Enum.Cor;
 import Excecoes.MovimentoNaoPermitido;
 import Jogador.Jogador;
 import Pecas.Peca;
@@ -20,10 +21,12 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 	private JButton[][] botoes = new JButton[8][8];
 	private Tabuleiro t;
 	private int x = -1, y = -1;
+	private Jogador um, dois;
 
 	public TelaTabuleiro(Jogador um, Jogador dois) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		this.um = um;
+		this.dois = dois;
 		setBounds(400, 50, 773, 577);
 		setTitle("Jogo Xadrez");
 		setLocationRelativeTo(null);
@@ -32,67 +35,9 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		criarLabels();
 		
-		JLabel lblNomeJogador = new JLabel("Nome jogador:");
-		lblNomeJogador.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNomeJogador.setBounds(560, 125, 86, 14);
-		contentPane.add(lblNomeJogador);
 		
-		JLabel lbJogador = new JLabel(um.getNome());
-		lbJogador.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lbJogador.setBounds(656, 125, 91, 14);
-		contentPane.add(lbJogador);
-		
-		JLabel lblX = new JLabel("X");
-		lblX.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblX.setBounds(625, 170, 15, 14);
-		contentPane.add(lblX);
-		
-		JLabel lblNewLabel = new JLabel("Nome Jogador:");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNewLabel.setBounds(560, 196, 86, 14);
-		contentPane.add(lblNewLabel);
-		
-		JLabel lbJogador2 = new JLabel(dois.getNome());
-		lbJogador2.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lbJogador2.setBounds(656, 196, 91, 14);
-		contentPane.add(lbJogador2);
-		
-		JLabel lblCor = new JLabel("Cor:");
-		lblCor.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblCor.setBounds(560, 150, 46, 14);
-		contentPane.add(lblCor);
-		
-		JLabel lbCorJ1 = new JLabel(um.getCor().toString());
-		lbCorJ1.setBounds(656, 150, 66, 14);
-		contentPane.add(lbCorJ1);
-		
-		JLabel lblCor_1 = new JLabel("Cor:");
-		lblCor_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblCor_1.setBounds(560, 221, 46, 14);
-		contentPane.add(lblCor_1);
-		
-		JLabel lbCorJ2 = new JLabel(dois.getCor().toString());
-		lbCorJ2.setBounds(656, 221, 66, 14);
-		contentPane.add(lbCorJ2);
-		
-		JLabel jogadorDaVez = new JLabel("Nome do Jogador da vez");
-		jogadorDaVez.setFont(new Font("Tahoma", Font.BOLD, 11));
-		jogadorDaVez.setBounds(560, 292, 162, 14);
-		contentPane.add(jogadorDaVez);
-		
-		JLabel nomeJogadorDaVez = new JLabel("");
-		nomeJogadorDaVez.setBounds(572, 329, 116, 14);
-		contentPane.add(nomeJogadorDaVez);
-		
-		JLabel msgTempo = new JLabel("Tempo");
-		msgTempo.setFont(new Font("Tahoma", Font.BOLD, 11));
-		msgTempo.setBounds(603, 354, 66, 14);
-		contentPane.add(msgTempo);
-		
-		JLabel tempo = new JLabel("");
-		tempo.setBounds(600, 405, 46, 14);
-		contentPane.add(tempo);
 		t = new Tabuleiro(um,dois);
 		criarBotoes();
 		
@@ -274,20 +219,115 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 					if(e.getSource() == botoes[x][y]) {
 						
 						try {
-							t.getPeca(this.x, this.y).moverPeca(this.x, this.y, x, y);
-							t.getTabuleiro()[this.x][this.y] = null;
-							this.x = x;
-							this.y = y;
-							t.atualizaTabuleiro();
-							attImg();
+							System.out.println(vezJogador());
+							if(vezJogador().equals(um.getNome()) && um.verificaSeExistePeca(this.x, this.y)) {
+								System.out.println("entrou no if da ação");
+								moverPeca(x, y, dois);
+								um.passaVez();
+							}else if(vezJogador().equals(dois.getNome()) && dois.verificaSeExistePeca(this.x, this.y)) {
+								System.out.println("entrou no else da ação");
+								moverPeca(x, y, um);
+								um.passaVez();
+								dois.passaVez();
+							}else {
+								JOptionPane.showMessageDialog(null, "Movimento não Permitido.");
+								this.x = -1;
+								this.y = -1;
+							}
+							
 							
 						} catch (MovimentoNaoPermitido e1) {
-							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Movimento não Permitido.");
 						}
 					}
 				}
 			}
 		}
-		JOptionPane.showMessageDialog(null, "Clicou no botão");
+	}
+	public void criarLabels() {
+		JLabel lblNomeJogador = new JLabel("Nome jogador:");
+		lblNomeJogador.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNomeJogador.setBounds(560, 125, 86, 14);
+		contentPane.add(lblNomeJogador);
+		
+		JLabel lbJogador = new JLabel(um.getNome());
+		lbJogador.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lbJogador.setBounds(656, 125, 91, 14);
+		contentPane.add(lbJogador);
+		
+		JLabel lblX = new JLabel("X");
+		lblX.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblX.setBounds(625, 170, 15, 14);
+		contentPane.add(lblX);
+		
+		JLabel lblNewLabel = new JLabel("Nome Jogador:");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel.setBounds(560, 196, 86, 14);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lbJogador2 = new JLabel(dois.getNome());
+		lbJogador2.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lbJogador2.setBounds(656, 196, 91, 14);
+		contentPane.add(lbJogador2);
+		
+		JLabel lblCor = new JLabel("Cor:");
+		lblCor.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblCor.setBounds(560, 150, 46, 14);
+		contentPane.add(lblCor);
+		
+		JLabel lbCorJ1 = new JLabel(um.getCor().toString());
+		lbCorJ1.setBounds(656, 150, 66, 14);
+		contentPane.add(lbCorJ1);
+		
+		JLabel lblCor_1 = new JLabel("Cor:");
+		lblCor_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblCor_1.setBounds(560, 221, 46, 14);
+		contentPane.add(lblCor_1);
+		
+		JLabel lbCorJ2 = new JLabel(dois.getCor().toString());
+		lbCorJ2.setBounds(656, 221, 66, 14);
+		contentPane.add(lbCorJ2);
+		
+		JLabel jogadorDaVez = new JLabel("Nome do Jogador da vez");
+		jogadorDaVez.setFont(new Font("Tahoma", Font.BOLD, 11));
+		jogadorDaVez.setBounds(560, 292, 162, 14);
+		contentPane.add(jogadorDaVez);
+		
+		JLabel nomeJogadorDaVez = new JLabel(vezJogador());
+		nomeJogadorDaVez.setBounds(606, 317, 116, 14);
+		contentPane.add(nomeJogadorDaVez);
+		
+		JLabel msgTempo = new JLabel("Tempo");
+		msgTempo.setFont(new Font("Tahoma", Font.BOLD, 11));
+		msgTempo.setBounds(603, 354, 66, 14);
+		contentPane.add(msgTempo);
+		
+		JLabel tempo = new JLabel("");
+		tempo.setBounds(603, 390, 46, 14);
+		contentPane.add(tempo);
+	}
+	public String vezJogador(){
+
+		if(um.getVez()){
+			
+			return um.getNome();
+		}
+		else{
+			
+			return dois.getNome();
+			
+		}		
+	}
+	public void moverPeca(int x, int y, Jogador p) throws MovimentoNaoPermitido {
+		t.getPeca(this.x, this.y).moverPeca(this.x, this.y, x, y);
+		t.getTabuleiro()[this.x][this.y] = null;
+		if(p.getPeca(x, y) != null){
+			p.removePeca(x, y);
+		}
+		this.x = -1;
+		this.y = -1;
+		
+		t.atualizaTabuleiro();
+		attImg();
 	}
 }

@@ -16,9 +16,9 @@ public class Peao extends Peca{
 	public void  iniciaImg() {
 		
 		if(cor.BRANCO == cor) {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Brancas/Peao.jpg");
+			img = new ImageIcon("img/Brancas/Peao.jpg");
 		}else {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Escuras/Peao.jpg");
+			img = new ImageIcon("img/Escuras/Peao.jpg");
 		}
 			
 		

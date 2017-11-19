@@ -14,9 +14,9 @@ public class Torre extends Peca{
 	@Override
 	public void iniciaImg() {
 		if(cor.BRANCO == cor) {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Brancas/Torre.jpg");
+			img = new ImageIcon("img/Brancas/Torre.jpg");
 		}else {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Escuras/Torre.jpg");
+			img = new ImageIcon("img/Escuras/Torre.jpg");
 		}
 		
 	}

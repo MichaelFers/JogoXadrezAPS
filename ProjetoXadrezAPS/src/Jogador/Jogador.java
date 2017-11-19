@@ -7,17 +7,29 @@ import Enum.Cor;
 import Pecas.*;
 
 public class Jogador {
-	
+
 	private String nome;
 	private List<Peca> pecas;
 	private Cor cor;
-	
-	
+	private boolean vez;
+
+
 	public Jogador(String nome, Cor cor) {
 		pecas = new ArrayList();
 		this.nome = nome;
 		this.cor = cor;
+		vez = true;
 		addTodasAsPecas();
+	}
+public boolean verificaSeExistePeca(int x, int y){
+		
+		for(Peca p: this.pecas){
+			if(p.getX() == x && p.getY() == y){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	public String getNome() {
@@ -29,11 +41,11 @@ public class Jogador {
 	}
 	public void addPeca(Peca peca) {
 		if(peca != null) {
-		pecas.add(peca);
+			pecas.add(peca);
 		}
 	}
 	public void addTodasAsPecas() {
-		
+
 		if(cor==null) {
 			System.out.println("null");
 		}
@@ -68,6 +80,42 @@ public class Jogador {
 	}
 	public Cor getCor() {
 		return cor;
+	}
+	public void passaVez(){
+		if(this.vez){
+			this.vez = false;
+		}else{
+			this.vez = true;
+		}
+	}
+	public void removePeca(int x, int y){
+		for(Peca a: this.pecas){
+			if(a.getX()== x && a.getY()==y){
+				pecas.remove(a);
+				break;
+			}
+		}
+	}
+	public Peca getPeca(int x, int y){
+		for(Peca p: this.pecas){
+			if(p.getX() == x && p.getY() == y){
+				return p;
+			}
+		}
+		return null;
+	}
+
+	public boolean getVez(){
+		return this.vez;
+	}
+	public Peca getRei(){
+
+		for(Peca p: this.pecas){
+			if(p instanceof Rei){
+				return p;
+			}
+		}
+		return null;
 	}
 
 }

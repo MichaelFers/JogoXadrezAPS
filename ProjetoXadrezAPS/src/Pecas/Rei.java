@@ -16,9 +16,9 @@ public class Rei extends Peca{
 	@Override
 	public void iniciaImg() {
 		if(cor.BRANCO == cor) {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Brancas/Rei.jpg");
+			img = new ImageIcon("img/Brancas/Rei.jpg");
 		}else {
-			img = new ImageIcon("C:/Users/Michael Fernandes/eclipse-workspace/ProjetoXadrezAPS/img/Escuras/Rei.jpg");
+			img = new ImageIcon("img/Escuras/Rei.jpg");
 		}
 		
 	}
