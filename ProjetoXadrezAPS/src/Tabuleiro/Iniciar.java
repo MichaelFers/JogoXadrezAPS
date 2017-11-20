@@ -148,7 +148,7 @@ public class Iniciar extends JFrame implements ActionListener {
 			TelaTabuleiro tela =null;
 			try {
 
-				jogadores = criarJogadoresAuto(); //criarJogadores();
+				jogadores = criarJogadores();//criarJogadoresAuto(); 
 				tela = new TelaTabuleiro(jogadores[0], jogadores[1]);
 				tela.setVisible(true);
 				dispose();
