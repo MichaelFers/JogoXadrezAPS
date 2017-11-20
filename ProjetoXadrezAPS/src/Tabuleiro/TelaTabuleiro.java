@@ -12,11 +12,11 @@ import javax.swing.border.EmptyBorder;
 
 import Enum.Cor;
 import Excecoes.MovimentoNaoPermitido;
+import Excecoes.TempoExpiradoException;
 import Gravador.GravadorDePartida;
 import Jogador.Jogador;
 import Pecas.Peca;
 import Threads.Contador;
-import Threads.Xeque;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,6 +34,7 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 	private JLabel nomeJogadorDaVez;
 	private boolean xeque;
 	private GravadorDePartida gravador;
+	Contador c;
 
 	public TelaTabuleiro(Jogador um, Jogador dois) throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +52,7 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 		xeque = false;
 		t = new Tabuleiro(um,dois);
 		criarBotoes();
-		Contador c = new Contador(tempo);
+		c = new Contador(tempo);
 		c.start();
 		gravador = new GravadorDePartida();
 
@@ -233,29 +234,31 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 					if(e.getSource() == botoes[x][y]) {
 
 						try {
-							
+
 							if(vezJogador().equals(um.getNome()) && um.verificaSeExistePeca(this.x, this.y) && moverPeca(x, y, dois)) {
 								um.passaVez();
 								nomeJogadorDaVez.setText(vezJogador());
-
+								c.resetaTempo();
 							}else if(vezJogador().equals(dois.getNome()) && dois.verificaSeExistePeca(this.x, this.y) && moverPeca(x, y, um)) {
 								um.passaVez();
 								nomeJogadorDaVez.setText(vezJogador());
 								dois.passaVez();
+								c.resetaTempo();
 							}else {
 								JOptionPane.showMessageDialog(null, "Movimento não Permitido.");
 								this.x = -1;
 								this.y = -1;
 							}
 							verificaXeque();
-							
+
 						} catch (MovimentoNaoPermitido e1) {
 							this.x = -1;
 							this.y = -1;
+							
 							JOptionPane.showMessageDialog(null, "Movimento não Permitido.");
 						}
 					}
-					
+
 				}
 			}
 		}
@@ -347,7 +350,7 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 
 		this.x = -1;
 		this.y = -1;
-		
+
 		t.atualizaTabuleiro();
 		attImg();
 		return true;

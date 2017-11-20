@@ -1,33 +1,39 @@
 package Threads;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import Excecoes.TempoExpiradoException;
 
 public class Contador extends Thread{
 	private int cont;
 	private JLabel b;
 	public Contador(JLabel b) {
-		cont = 0;
+		cont = 30;
 		this.b = b;
 	}
 	@Override
 	public void run() {
 
-		for(int x=0; x<30;x++) {
-			cont++;
+		while(cont > 0) {
+			
 			b.setText(""+cont);
+			System.out.println(cont);
 			try {
 				this.sleep(1000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Erro de interrupção");
 			}
+			cont--;
 		}
-
+		JOptionPane.showMessageDialog(null, "Tempo Expirado, recomece o jogo.");
+		System.exit(0);
 	}
 	public void resetaTempo() {
-		cont = 0;
+		cont = 30;
 	}
-	public int getContador() {
-		return cont;
+	public int getContador() throws  TempoExpiradoException{	
+			return cont;
 	}
 
 }

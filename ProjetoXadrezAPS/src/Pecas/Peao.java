@@ -34,7 +34,6 @@ public class Peao extends Peca{
 	public void verificaPeaoVirouRainha(){
 
 		if((super.getCor()==Cor.BRANCO && super.getX()==0) || (super.getCor() ==Cor.PRETO && super.getX()==7)){
-			System.out.println("entrou condição if virar rainha");
 			this.virouRainha = true;
 			this.movimento.clear();
 			this.movimento.add(new MoveTorre());
