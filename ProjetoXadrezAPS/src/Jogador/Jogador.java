@@ -21,16 +21,17 @@ public class Jogador {
 		vez = true;
 		addTodasAsPecas();
 	}
-public boolean verificaSeExistePeca(int x, int y){
-		
+	public boolean verificaSeExistePeca(int x, int y){
+
 		for(Peca p: this.pecas){
 			if(p.getX() == x && p.getY() == y){
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
+
 
 	public String getNome() {
 		return nome;
@@ -59,8 +60,8 @@ public boolean verificaSeExistePeca(int x, int y){
 			addPeca(new Cavalo(0,6,cor.PRETO));
 			addPeca(new Bispo(0,2,cor.PRETO));
 			addPeca(new Bispo(0,5,cor.PRETO));
-			addPeca(new Rei(0,3,cor.PRETO));;
-			addPeca(new Rainha(0,4,cor.PRETO));
+			addPeca(new Rainha(0,3,cor.PRETO));;
+			addPeca(new Rei(0,4,cor.PRETO));
 		}else {
 			for(int x=0; x< 8;x++) {
 				addPeca(new Peao(6,x,cor.BRANCO));
@@ -71,8 +72,8 @@ public boolean verificaSeExistePeca(int x, int y){
 			addPeca(new Cavalo(7,6,cor.BRANCO));
 			addPeca(new Bispo(7,2,cor.BRANCO));
 			addPeca(new Bispo(7,5,cor.BRANCO));
-			addPeca(new Rei(7,3,cor.BRANCO));
-			addPeca(new Rainha(7,4,cor.BRANCO));
+			addPeca(new Rainha(7,3,cor.BRANCO));
+			addPeca(new Rei(7,4,cor.BRANCO));
 		}
 	}
 	public List<Peca> getPecas(){

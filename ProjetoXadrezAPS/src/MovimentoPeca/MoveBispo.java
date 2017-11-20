@@ -14,93 +14,115 @@ public class MoveBispo implements Movimento{
 		if(xAtual<xPara && yAtual<yPara){
 
 			while(true){
-				y++;
-				x++;
-				if(t[x][y] instanceof PecaVazia){
-					if(y==yPara && x==xPara){
-						
-						return true;
+				y--;
+				x--;
+				try {
+					if(t[x][y] instanceof PecaVazia){
+						if(y==yPara && x==xPara){
+
+							return true;
+						}else{
+							continue;
+						}
 					}else{
-						continue;
-					}
-				}else{
-					if((!t[xAtual][yAtual].getCor().equals(t[xPara][yPara].getCor()) && (y==yPara && x==xPara))){
+						if((!t[xAtual][yAtual].getCor().equals(t[xPara][yPara].getCor()) && (y==yPara && x==xPara))){
 
-						return true;
-					}
+							return true;
+						}
 
+						return false;
+					}
+				}catch(ArrayIndexOutOfBoundsException e) {
 					return false;
 				}
-
 			}
 		}
 		if(xAtual<xPara && yAtual>yPara){
 
 			while(true){
-				y--;
-				x++;
-				if(y>=0 && t[x][y] instanceof PecaVazia){
-					if(y==yPara && x==xPara){
+				y++;
+				x--;
+				try {
+					if(y>=0 && t[x][y] instanceof PecaVazia){
+						if(y==yPara && x==xPara){
 
-						return true;
+							return true;
+						}else{
+							continue;
+						}
 					}else{
-						continue;
-					}
-				}else{
-					if((!t[xAtual][yAtual].getCor().equals(t[xPara][yPara].getCor()) && (y==yPara && x==xPara))){
+						if((!t[xAtual][yAtual].getCor().equals(t[xPara][yPara].getCor()) && (y==yPara && x==xPara))){
 
-						return true;
-					}
+							return true;
+						}
 
+						return false;
+					}
+				}catch(ArrayIndexOutOfBoundsException e) {
 					return false;
 				}
+
 			}
 		}
 		if(xAtual>xPara && yAtual<yPara){
 
 			while(true){
-				y++;
-				x--;
-				if(t[x][y] instanceof PecaVazia){
-					if(y==yPara && x==xPara){
-
-						return true;
-					}else{
-						continue;
-					}
-				}else {
-					if((!t[xAtual][yAtual].getCor().equals(t[xPara][yPara].getCor()) && y==yPara && x==xPara)){
-
-						return true;
-					}else{
-
-						return false;
-					}
-
+				y--;
+				x++;
+				if(x==-1 || y==-1) {
+					return false;
 				}
+				try{
+					if(t[x][y] instanceof PecaVazia){
+						if(y==yPara && x==xPara){
+
+							return true;
+						}else{
+							continue;
+						}
+					}else {
+						if((!t[xAtual][yAtual].getCor().equals(t[xPara][yPara].getCor()) && y==yPara && x==xPara)){
+
+							return true;
+						}else{
+
+							return false;
+						}
+
+					}
+				}catch (ArrayIndexOutOfBoundsException e) {
+					return false;
+				}
+
 			}
 		}
 		if(xAtual>xPara && yAtual>yPara){
 
 			while(true){
-				y--;
-				x--;
-				if(t[x][y] instanceof PecaVazia){
-					if(y==yPara && x==xPara){
+				y++;
+				x++;
+				try {
+					if(t[x][y] instanceof PecaVazia){
+						if(y==yPara && x==xPara){
 
-						return true;
+							return true;
+						}else{
+							continue;
+						}
 					}else{
-						continue;
-					}
-				}else{
-					if((!t[xAtual][yAtual].getCor().equals(t[xPara][yPara].getCor()) && (y==yPara && x==xPara))){
+						if((!t[xAtual][yAtual].getCor().equals(t[xPara][yPara].getCor()) && (y==yPara && x==xPara))){
 
-						return true;
-					}else{
+							return true;
+						}else{
 
-						return false;
+							return false;
+						}
 					}
+				}catch (ArrayIndexOutOfBoundsException e) {
+					return false;
 				}
+
+
 			}
 		}else{
 

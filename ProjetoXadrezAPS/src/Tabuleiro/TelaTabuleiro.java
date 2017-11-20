@@ -2,6 +2,9 @@ package Tabuleiro;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -9,11 +12,16 @@ import javax.swing.border.EmptyBorder;
 
 import Enum.Cor;
 import Excecoes.MovimentoNaoPermitido;
+import Gravador.GravadorDePartida;
 import Jogador.Jogador;
 import Pecas.Peca;
+import Threads.Contador;
+import Threads.Xeque;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.HeadlessException;
 
 public class TelaTabuleiro extends JFrame implements ActionListener {
 
@@ -22,8 +30,12 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 	private Tabuleiro t;
 	private int x = -1, y = -1;
 	private Jogador um, dois;
+	private JLabel tempo;
+	private JLabel nomeJogadorDaVez;
+	private boolean xeque;
+	private GravadorDePartida gravador;
 
-	public TelaTabuleiro(Jogador um, Jogador dois) {
+	public TelaTabuleiro(Jogador um, Jogador dois) throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.um = um;
 		this.dois = dois;
@@ -36,13 +48,15 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		criarLabels();
-		
-		
+		xeque = false;
 		t = new Tabuleiro(um,dois);
 		criarBotoes();
-		
+		Contador c = new Contador(tempo);
+		c.start();
+		gravador = new GravadorDePartida();
+
 	}
-	
+
 	public void attImg() {
 		Peca[][] p = t.getTabuleiro();
 		for(int x=0; x< botoes.length;x++ ) {
@@ -52,18 +66,18 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 			}
 		}
 	}
-	
+
 
 	public void criarBotoes() {
-		
+
 		Peca[][] p = t.getTabuleiro();
 		for(int x=0; x< botoes.length;x++ ) {
 
 			for(int y=0; y<botoes[x].length; y++) {
-				
+
 				botoes[x][y] = new JButton(p[x][y].getImg());
-			
-		
+
+
 				if(x==0 && y==0) {
 					botoes[x][y].setBounds(30, 34, 64, 63);
 				}if(x==0 && y==1) {
@@ -201,7 +215,7 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		if(x == -1 && y == -1) {
 			for(int x=0; x< botoes.length;x++ ) {
 
@@ -217,29 +231,31 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 
 				for(int y=0; y<botoes[x].length; y++) {
 					if(e.getSource() == botoes[x][y]) {
-						
+
 						try {
-							System.out.println(vezJogador());
-							if(vezJogador().equals(um.getNome()) && um.verificaSeExistePeca(this.x, this.y)) {
-								System.out.println("entrou no if da ação");
-								moverPeca(x, y, dois);
+							
+							if(vezJogador().equals(um.getNome()) && um.verificaSeExistePeca(this.x, this.y) && moverPeca(x, y, dois)) {
 								um.passaVez();
-							}else if(vezJogador().equals(dois.getNome()) && dois.verificaSeExistePeca(this.x, this.y)) {
-								System.out.println("entrou no else da ação");
-								moverPeca(x, y, um);
+								nomeJogadorDaVez.setText(vezJogador());
+
+							}else if(vezJogador().equals(dois.getNome()) && dois.verificaSeExistePeca(this.x, this.y) && moverPeca(x, y, um)) {
 								um.passaVez();
+								nomeJogadorDaVez.setText(vezJogador());
 								dois.passaVez();
 							}else {
 								JOptionPane.showMessageDialog(null, "Movimento não Permitido.");
 								this.x = -1;
 								this.y = -1;
 							}
-							
+							verificaXeque();
 							
 						} catch (MovimentoNaoPermitido e1) {
+							this.x = -1;
+							this.y = -1;
 							JOptionPane.showMessageDialog(null, "Movimento não Permitido.");
 						}
 					}
+					
 				}
 			}
 		}
@@ -249,85 +265,134 @@ public class TelaTabuleiro extends JFrame implements ActionListener {
 		lblNomeJogador.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNomeJogador.setBounds(560, 125, 86, 14);
 		contentPane.add(lblNomeJogador);
-		
+
 		JLabel lbJogador = new JLabel(um.getNome());
 		lbJogador.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lbJogador.setBounds(656, 125, 91, 14);
 		contentPane.add(lbJogador);
-		
+
 		JLabel lblX = new JLabel("X");
 		lblX.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblX.setBounds(625, 170, 15, 14);
 		contentPane.add(lblX);
-		
+
 		JLabel lblNewLabel = new JLabel("Nome Jogador:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNewLabel.setBounds(560, 196, 86, 14);
 		contentPane.add(lblNewLabel);
-		
+
 		JLabel lbJogador2 = new JLabel(dois.getNome());
 		lbJogador2.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lbJogador2.setBounds(656, 196, 91, 14);
 		contentPane.add(lbJogador2);
-		
+
 		JLabel lblCor = new JLabel("Cor:");
 		lblCor.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblCor.setBounds(560, 150, 46, 14);
 		contentPane.add(lblCor);
-		
+
 		JLabel lbCorJ1 = new JLabel(um.getCor().toString());
 		lbCorJ1.setBounds(656, 150, 66, 14);
 		contentPane.add(lbCorJ1);
-		
+
 		JLabel lblCor_1 = new JLabel("Cor:");
 		lblCor_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblCor_1.setBounds(560, 221, 46, 14);
 		contentPane.add(lblCor_1);
-		
+
 		JLabel lbCorJ2 = new JLabel(dois.getCor().toString());
 		lbCorJ2.setBounds(656, 221, 66, 14);
 		contentPane.add(lbCorJ2);
-		
+
 		JLabel jogadorDaVez = new JLabel("Nome do Jogador da vez");
 		jogadorDaVez.setFont(new Font("Tahoma", Font.BOLD, 11));
-		jogadorDaVez.setBounds(560, 292, 162, 14);
+		jogadorDaVez.setBounds(560, 281, 162, 14);
 		contentPane.add(jogadorDaVez);
-		
-		JLabel nomeJogadorDaVez = new JLabel(vezJogador());
-		nomeJogadorDaVez.setBounds(606, 317, 116, 14);
+
+		nomeJogadorDaVez = new JLabel(vezJogador());
+		nomeJogadorDaVez.setBounds(606, 318, 116, 14);
 		contentPane.add(nomeJogadorDaVez);
-		
+
 		JLabel msgTempo = new JLabel("Tempo");
 		msgTempo.setFont(new Font("Tahoma", Font.BOLD, 11));
-		msgTempo.setBounds(603, 354, 66, 14);
+		msgTempo.setBounds(606, 354, 66, 14);
 		contentPane.add(msgTempo);
-		
-		JLabel tempo = new JLabel("");
-		tempo.setBounds(603, 390, 46, 14);
+
+		tempo = new JLabel("");
+		tempo.setBounds(623, 379, 46, 14);
 		contentPane.add(tempo);
 	}
+
 	public String vezJogador(){
 
 		if(um.getVez()){
-			
 			return um.getNome();
 		}
 		else{
-			
 			return dois.getNome();
-			
 		}		
 	}
-	public void moverPeca(int x, int y, Jogador p) throws MovimentoNaoPermitido {
-		t.getPeca(this.x, this.y).moverPeca(this.x, this.y, x, y);
+	public boolean moverPeca(int x, int y, Jogador p) throws MovimentoNaoPermitido {
+
+		if(t.getPeca(this.x, this.y).moverPeca(this.x, this.y, x, y)) {
+			t.getPeca(this.x, this.y).setPosicao(x, y);
+		}else {
+			return false;
+		}
+
 		t.getTabuleiro()[this.x][this.y] = null;
 		if(p.getPeca(x, y) != null){
 			p.removePeca(x, y);
 		}
+
 		this.x = -1;
 		this.y = -1;
 		
 		t.atualizaTabuleiro();
 		attImg();
+		return true;
+
+	}
+	public void verificaXeque() {
+		try {
+			Peca reiDois = dois.getRei();
+			if(reiDois == null){
+				JOptionPane.showMessageDialog(null, um.getNome()+": Xeque-Mate!");
+				finalizaJogo(um,dois);
+			}
+
+			for(Peca p: um.getPecas()){
+				if(xeque==false && p.moverPeca(p.getX(), p.getY(), reiDois.getX(), reiDois.getY())){
+					JOptionPane.showMessageDialog(null, um.getNome()+": Xeque!");
+					xeque = true;
+					break;
+				}
+			}
+
+			Peca reiUm = um.getRei();
+			if(reiUm == null){
+				JOptionPane.showMessageDialog(null, dois.getNome()+": Xeque-Mate!");
+				finalizaJogo(dois,um);
+			}
+
+			for(Peca p: dois.getPecas()){
+
+				if(xeque==false && p.moverPeca(p.getX(), p.getY(), reiDois.getX(), reiDois.getY())){
+					JOptionPane.showMessageDialog(null, dois.getNome()+": Xeque!");
+					xeque = true;
+					break;
+				}
+			} 
+		}	catch (MovimentoNaoPermitido e) {
+			e.printStackTrace();
+		}
+	}
+	public void finalizaJogo(Jogador um, Jogador dois) {
+		try {
+			gravador.gravar("Vencedor: "+um.getNome()+" xeque-Mate em: "+dois.getNome() );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.exit(0);
 	}
 }

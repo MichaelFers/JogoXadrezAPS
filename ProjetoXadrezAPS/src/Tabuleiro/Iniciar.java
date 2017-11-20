@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import About.Desenvolvedores;
 import Enum.Cor;
 import Excecoes.CorDaPecaNaoExiste;
 import Jogador.Jogador;
@@ -38,8 +39,8 @@ public class Iniciar extends JFrame implements ActionListener {
 	JButton btInicia; 
 	ImageIcon img2;
 	JLabel lbImg;
-	
-	
+
+
 
 	public static void main(String[] args) {
 		Iniciar frame = new Iniciar();
@@ -66,28 +67,29 @@ public class Iniciar extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setTitle("Jogo Xadrez");
-		
+
 		menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 573, 21);
 		contentPane.add(menuBar);
-		
+
 		mnNewMenu = new JMenu("File");
 		menuBar.add(mnNewMenu);
-		
+
 		novoJogo = new JMenuItem("Novo Jogo");
 		mnNewMenu.add(novoJogo);
-		
+
 		placar = new JMenuItem("Placar Partidas");
 		mnNewMenu.add(placar);
-		
+
 		about = new JMenuItem("About");
+		about.addActionListener(this);
 		mnNewMenu.add(about);
-		
+
 		sair = new JMenuItem("Sair");
 		menuBar.add(sair);
 		sair.addActionListener(this);
 		novoJogo.addActionListener(this);
-		
+
 		img1 = new ImageIcon(
 				"img/start.jpg");
 
@@ -102,7 +104,7 @@ public class Iniciar extends JFrame implements ActionListener {
 		lbImg = new JLabel(img2);
 		lbImg.setBounds(0, 0, 566, 426);
 		contentPane.add(lbImg);
-		
+
 
 	}
 
@@ -140,23 +142,36 @@ public class Iniciar extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
+
 		if(arg0.getSource() == btInicia || arg0.getSource() == novoJogo) {
 			Jogador[] jogadores = null;
 			TelaTabuleiro tela =null;
 			try {
-				
+
 				jogadores = criarJogadoresAuto(); //criarJogadores();
 				tela = new TelaTabuleiro(jogadores[0], jogadores[1]);
 				tela.setVisible(true);
 				dispose();
-				
+
 			} catch (Exception  e) {
 				JOptionPane.showMessageDialog(null, e.getMessage());
-				
+
 			}
 		}if(arg0.getSource() == sair) {
-			System.exit(0);
+
+			int i = JOptionPane.showConfirmDialog(null ,"Deseja sair?", "Sair",JOptionPane.YES_NO_OPTION);
+			if (i == JOptionPane.YES_OPTION) {
+				System.exit(0);
+			} else {
+				repaint();
+			}
+		}
+
+
+
+		if(arg0.getSource() == about) {
+			Desenvolvedores d = new Desenvolvedores();
+			d.setVisible(true);
 		}
 	}
 	public Jogador[] criarJogadoresAuto() {

@@ -30,17 +30,19 @@ public abstract class Peca {
 	
 	
 	
-	public void moverPeca(int xAtual, int yAtual, int xNovo, int yNovo) throws MovimentoNaoPermitido{
+	public boolean moverPeca(int xAtual, int yAtual, int xNovo, int yNovo) throws MovimentoNaoPermitido{
+		
+		boolean permicao = false;
 		
 		for(Movimento m: movimento) {
-			if(m.mover(ta.getTabuleiro() , xAtual, yAtual,  xNovo,  yNovo)) {
-				x= xNovo;
-				y= yNovo;
-				System.out.println("entrou no movePeca, movimento aceito");
-			}else {
-				System.out.println("entrou no else, movimento não aceito");
+			permicao = m.mover(ta.getTabuleiro() , xAtual, yAtual,  xNovo,  yNovo);
+			if(permicao) {
+				
+				return true;
 			}
 		}
+		
+		return permicao;
 		
 	}
 	
@@ -56,8 +58,12 @@ public abstract class Peca {
 		return cor;
 	}
 	public ImageIcon getImg() {
+		iniciaImg();
 		return img;
 	}
-	
+	public void setPosicao(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 
 }
