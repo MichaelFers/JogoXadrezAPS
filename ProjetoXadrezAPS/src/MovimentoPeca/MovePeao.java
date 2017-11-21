@@ -29,7 +29,7 @@ public class MovePeao implements Movimento{
 			}
 			if((x-1==xPara && y+1==yPara) || (x-1==xPara && y-1==yPara) ){
 
-				if((!t[xPara][yPara].getCor().equals(t[x][y].getCor()))){
+				if((!t[xPara][yPara].getCor().equals(t[x][y].getCor())) && (!(t[xPara][yPara] instanceof PecaVazia))){
 
 					return true;
 				}
@@ -62,7 +62,7 @@ public class MovePeao implements Movimento{
 			}
 			if((x+1==xPara && y+1==yPara) || (x+1==xPara && y-1==yPara) ){
 
-				if((!t[xPara][yPara].getCor().equals(t[x][y].getCor()))){
+				if((!t[xPara][yPara].getCor().equals(t[x][y].getCor())) && (!(t[xPara][yPara] instanceof PecaVazia))){
 
 					return true;
 				}
